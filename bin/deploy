@@ -1,7 +1,9 @@
 #! /usr/bin/env bash
 
+image=public.ecr.aws/sam/build-ruby3.2:latest-x86_64
+
 function build() {
-    source=$1
+    source="$(pwd)/$1"
     build="$(pwd)/build"
     target="$build/$1"
 
@@ -12,8 +14,12 @@ function build() {
 
         bundle config set --local path 'vendor/bundle'
         bundle config set --local without 'development:test'
-        bundle check || bundle install -j 4
-        bundle clean --force
+        docker run --rm \
+            -v "$target:/var/task" \
+            --entrypoint="bundle" \
+            --platform linux/amd64 \
+            -e BUNDLE_SILENCE_ROOT_WARNING=1 \
+            $image install -j 4
 
     popd || exit
 
