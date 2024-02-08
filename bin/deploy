@@ -1,23 +1,31 @@
 #! /usr/bin/env bash
 
-SOURCE=./hello-world
-TARGET=./build
+function build() {
+    source=$1
+    build="$(pwd)/build"
+    target="$build/$1"
 
-rm -rf $TARGET
-cp -R $SOURCE $TARGET
+    # rsync
+    rsync -ar --delete --exclude=vendor "${source}" "${build}"
 
-pushd $TARGET || exit
+    pushd "${target}" || exit
 
-    bundle config set --local path 'vendor/bundle'
-    bundle config set --local without 'development:test'
-    bundle clean --force
-    bundle install
+        bundle config set --local path 'vendor/bundle'
+        bundle config set --local without 'development:test'
+        bundle check || bundle install -j 4
+        bundle clean --force
 
-popd || exit
+    popd || exit
 
-pushd infra || exit
+}
 
-    terraform plan -out plan.json
-    terraform apply plan.json
+function deploy() {
+    pushd infra || exit
+        terraform plan -out plan.json
+        terraform apply plan.json
+    popd || exit
+}
 
-popd || exit
+build "hello-world"
+build "countries"
+deploy
