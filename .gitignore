@@ -1,3 +1,7 @@
-/.bundle
 /build
 /vendor/bundle
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+plan.json

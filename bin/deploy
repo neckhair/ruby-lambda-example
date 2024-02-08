@@ -1,0 +1,23 @@
+#! /usr/bin/env bash
+
+SOURCE=./src
+TARGET=./build
+
+rm -rf $TARGET
+cp -R $SOURCE $TARGET
+
+pushd $TARGET || exit
+
+    bundle config set --local path 'vendor/bundle'
+    bundle config set --local without 'development:test'
+    bundle clean --force
+    bundle install
+
+popd || exit
+
+pushd infra || exit
+
+    terraform plan -out plan.json
+    terraform apply plan.json
+
+popd || exit
