@@ -17,7 +17,7 @@ resource "aws_iam_role" "hello-world-func" {
 }
 
 data "archive_file" "hello-world-package" {
-  output_path = "../package.zip"
+  output_path = "../dist/hello-world-package.zip"
   type        = "zip"
   source_dir  = "../build"
 }
