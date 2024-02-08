@@ -23,8 +23,6 @@ data "archive_file" "package" {
 }
 
 resource "aws_lambda_function" "hello_world" {
-  # If the file is not in the current working directory you will need to include a
-  # path.module in the filename.
   filename      = data.archive_file.package.output_path
   function_name = "hello-world"
   role          = aws_iam_role.hello_world_func.arn
