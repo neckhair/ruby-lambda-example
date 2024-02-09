@@ -1,20 +1,3 @@
-data "aws_iam_policy_document" "assume-role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "main-func" {
-  name               = var.function-name
-  assume_role_policy = data.aws_iam_policy_document.assume-role.json
-}
 
 data "archive_file" "deploy-package" {
   output_path = "${var.dist-path}/${var.function-name}-package.zip"
@@ -31,10 +14,11 @@ resource "aws_s3_object" "deploy-package" {
 
 resource "aws_lambda_function" "main" {
   function_name = var.function-name
-  role          = aws_iam_role.main-func.arn
+  role          = var.iam_role_arn
   handler       = var.handler
 
   runtime = var.runtime
+  timeout = var.func_timeout
 
   s3_bucket        = var.bucket-name
   s3_key           = aws_s3_object.deploy-package.key
