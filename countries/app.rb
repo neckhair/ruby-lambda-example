@@ -8,11 +8,7 @@ def handler(event:, context:)
   response = HTTParty.get(SOURCE)
   doc = Nokogiri::HTML5(response.body)
 
-  countries = []
-
   doc.css("#countries .country").map do |row|
-    countries << row.css(".country-name").first&.content&.strip
+    row.css(".country-name").first&.content&.strip
   end
-
-  JSON.generate(countries)
 end
