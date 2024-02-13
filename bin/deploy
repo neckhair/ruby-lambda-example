@@ -35,4 +35,5 @@ function deploy() {
 
 build "hello-world"
 build "countries"
+build "sinatra"
 deploy

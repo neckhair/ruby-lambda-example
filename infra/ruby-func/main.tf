@@ -51,3 +51,8 @@ resource "aws_lambda_function" "main" {
 
   layers = [aws_lambda_layer_version.gems-layer.arn]
 }
+
+resource "aws_lambda_function_url" "main" {
+  function_name      = aws_lambda_function.main.function_name
+  authorization_type = "NONE"
+}

@@ -6,6 +6,7 @@ There are three different examples in this repository. All examples are deployed
 
 - [Hello World](./hello-world/) is just a very simple and basic Ruby function.
 - [Countries](./countries/) scrapes a list of country names from a website and stores them in a DynamoDB Table.
+- [Sinatra](./sinatra/) shows how to deploy a little [Sinatra](https://sinatrarb.com/) app as a serverless function.
 
 ## Setup
 
