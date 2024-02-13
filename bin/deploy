@@ -12,10 +12,11 @@ function build() {
 
     pushd "${target}" || exit
 
-        bundle config set --local path 'vendor/bundle'
+        bundle config set --local path '/opt/ruby'
         bundle config set --local without 'development:test'
         docker run --rm \
             -v "$target:/var/task" \
+            -v "$build/$1-gems:/opt" \
             --entrypoint="bundle" \
             --platform linux/amd64 \
             -e BUNDLE_SILENCE_ROOT_WARNING=1 \
