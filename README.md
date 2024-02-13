@@ -2,6 +2,11 @@
 
 This repo shows you how to deploy a Ruby Lambda function using Terraform.
 
+There are three different examples in this repository. All examples are deployed together.
+
+- [Hello World](./hello-world/) is just a very simple and basic Ruby function.
+- [Countries](./countries/) scrapes a list of country names from a website and stores them in a DynamoDB Table.
+
 ## Setup
 
 You need to have [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) and the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed.
