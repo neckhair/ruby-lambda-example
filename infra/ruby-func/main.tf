@@ -50,6 +50,12 @@ resource "aws_lambda_function" "main" {
   depends_on = [aws_s3_object.deploy-package]
 
   layers = [aws_lambda_layer_version.gems-layer.arn]
+
+  environment {
+    variables = {
+      RAILS_ENV = var.rails_env
+    }
+  }
 }
 
 resource "aws_lambda_function_url" "main" {

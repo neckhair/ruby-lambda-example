@@ -1,7 +1,4 @@
-require "rubygems"
-require "bundler/setup"
-Bundler.require(:default)
-
+require "sinatra"
 require_relative "server"
 
 set :root, File.dirname(__FILE__)

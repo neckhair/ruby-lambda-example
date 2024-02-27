@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+# this script is used in the Docker builder container to install gems and copy
+# them into /opt, from where they are extracted into a Lambda layer.
+
+bundle install -j "$(nproc)"
+
+bundle config set --local deployment true
+bundle config set --local without 'development:test'
+
+mkdir -p /opt/ruby/gems
+rsync -ar --delete vendor/bundle/ruby/3.2.0 /opt/ruby/gems/

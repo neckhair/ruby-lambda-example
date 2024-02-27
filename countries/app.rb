@@ -1,6 +1,6 @@
-require "rubygems"
-require "bundler/setup"
-Bundler.require(:default)
+require "nokogiri"
+require "httparty"
+require "aws-record"
 
 require "digest"
 

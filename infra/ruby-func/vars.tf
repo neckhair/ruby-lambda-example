@@ -36,3 +36,8 @@ variable "func_timeout" {
   type    = number
   default = 3
 }
+
+variable "rails_env" {
+  type    = string
+  default = "production"
+}

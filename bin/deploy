@@ -1,26 +1,31 @@
 #! /usr/bin/env bash
 
-image=public.ecr.aws/sam/build-ruby3.2:latest-x86_64
+platform=linux/amd64
+image=ruby-lambda-builder
+
+function build_docker_image() {
+    docker build --platform $platform -t $image .
+}
 
 function build() {
     source="$(pwd)/$1"
     build="$(pwd)/build"
     target="$build/$1"
 
-    # rsync
+    # copy source into build directory
     rsync -ar --delete --exclude=vendor "${source}" "${build}"
 
     pushd "${target}" || exit
 
-        bundle config set --local path '/opt/ruby'
-        bundle config set --local without 'development:test'
-        docker run --rm \
+        # install gems using a Docker container
+        docker run \
+            --name "$1-builder" \
             -v "$target:/var/task" \
             -v "$build/$1-gems:/opt" \
-            --entrypoint="bundle" \
-            --platform linux/amd64 \
+            --platform $platform \
             -e BUNDLE_SILENCE_ROOT_WARNING=1 \
-            $image install -j 4
+            $image
+        docker rm "$1-builder"
 
     popd || exit
 
@@ -33,7 +38,9 @@ function deploy() {
     popd || exit
 }
 
+build_docker_image
 build "hello-world"
 build "countries"
 build "sinatra"
+build "on-rails"
 deploy
